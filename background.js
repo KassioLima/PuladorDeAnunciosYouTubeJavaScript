@@ -1,4 +1,5 @@
 // this is the background code...
+var nomeCookie = "pulador_"+Date.now();
 function createCookie (name, value, days) {
     var expires;
     if (days) {
@@ -27,19 +28,20 @@ function getCookie(c_name) {
     }
     return "";
 }
-createCookie('pulador', null, null);
+createCookie(nomeCookie+"", null, null);
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab)
 {
     if(tab)
-    if(getCookie('pulador').split(",").indexOf(""+tabId) < 0)
+    if(getCookie(nomeCookie+"").split(",").indexOf(""+tabId) < 0)
     {
         if (tab.url.includes("youtube.com"))
         {
-            var a = getCookie('pulador').split(",");
+            var a = getCookie(nomeCookie+"").split(",");
             var b = [tabId];
             var c = a.concat(b);
             var d = c.filter((item, pos) => c.indexOf(item) === pos);
-            createCookie('pulador', d, null);
+            createCookie(nomeCookie+"", d, null);
+            console.log("sallvando "+tabId);
             // for the current tab, inject the "inject.js" file & execue it
             chrome.tabs.executeScript(tab.ib,
             {
@@ -48,17 +50,5 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab)
                     // Process |result| here (or maybe do nothing at all).
                 });
         }
-        else if(!tab.url.includes("chrome://extensions/"))
-        {
-            var a = getCookie('pulador').split(",");
-            a.splice(a.indexOf(""+tabId));
-            createCookie('pulador', a, null);
-        }
     }
-});
-chrome.tabs.onRemoved.addListener(function (tabId, changeInfo, tab)
-{
-    var a = getCookie('pulador').split(",");
-    a.splice(a.indexOf(""+tabId));
-    createCookie('pulador', a, null);
 });
