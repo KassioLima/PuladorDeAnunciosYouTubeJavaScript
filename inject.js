@@ -1,37 +1,76 @@
 // this is the code which will be injected into a given page...
 (function ()
 {
-
-	// if(!window.location.href.includes('#pularanuncio'))
-	// {
-		var intervalo = setInterval(function ()
+	var nomeCookie = "pulador_";
+	function createCookie (name, value, days)
+	{
+		var expires;
+		if (days)
 		{
-			console.log("rodando");
+			var date = new Date();
+			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+			expires = "; expires=" + date.toGMTString();
+		}
+		else
+		{
+			expires = "";
+		}
+		document.cookie = name + "=" + value + expires + "; path=/";
+	}
+	function getCookie(c_name)
+	{
+		if (document.cookie.length > 0)
+		{
+			c_start = document.cookie.indexOf(c_name + "=");
+			if (c_start != -1)
+			{
+				c_start = c_start + c_name.length + 1;
+				c_end = document.cookie.indexOf(";", c_start);
+				if (c_end == -1)
+				{
+					c_end = document.cookie.length;
+				}
+				return unescape(document.cookie.substring(c_start, c_end));
+			}
+		}
+		return 0;
+	}
+
+	//se aba não tem código rodando
+	if(parseInt(getCookie(nomeCookie+tabId)) === 0)
+	{
+		//grava um cookie pra indicar que essa aba está com código rodando
+		createCookie(nomeCookie+tabId, tabId, 365);
+		setInterval(function ()
+		{
+			console.log("rodando "+tabId);
 			//controla se vc tá vendo um vídeo ou não
 			if (window.location.href.includes("watch"))
 			{
-				try {
-					try {
+				try
+				{
+					try
+					{
 						//fecha aquele bannerzinho horizontal que aparece em cima do vídeo
 						document.getElementsByClassName("ytp-ad-overlay-close-button")[0].click();
-						console.log("Propaganda fechada ;)");
-					} catch (err) {
+						console.log("Propaganda fechada");
 					}
+					catch(err) {}
 					//clica no botão de pular o anúncio
 					//funciona mesmo quando o botão ainda não apareceu
 					document.getElementsByClassName("ytp-ad-skip-button")[0].click();
-					console.log("Anúncio pulado bb");
-				} catch (err) {
+					console.log("Anúncio pulado");
 				}
+				catch(err) {}
 			}
-			//saiu do youtube na aba
-			if(!window.location.href.includes('youtube.com'))
-			{
-				console.log("parou");
-				clearInterval(intervalo);
-			}
-		}, 5000);
-	// }
-	// history.pushState('','', '#pularanuncio');
+		}, 200);
+	}
+
+	window.addEventListener('beforeunload', (event) =>
+	{
+		//limpa o cookie da aba atual
+		console.log("limpando cookie "+tabId);
+		createCookie(nomeCookie+tabId, 0, 0);
+	});
 })();
 
