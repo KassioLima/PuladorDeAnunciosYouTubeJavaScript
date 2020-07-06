@@ -1,8 +1,8 @@
 {
-  "name": "Injecta",
-  "version": "0.0.1",
+  "name": "Pulador de anúncios",
+  "version": "1.0.0",
   "manifest_version": 2,
-  "description": "Injecting stuff",
+  "description": "Pula anúncios do YouTube e fecha banners que aparecem sobre o vídeo.",
   "homepage_url": "http://danharper.me",
   "background": {
     "scripts": [
@@ -11,7 +11,7 @@
     "persistent": true
   },
   "browser_action": {
-    "default_title": "Inject!"
+    "default_title": "Pulador de anúncios"
   },
   "permissions": [
     "https://*/*",
