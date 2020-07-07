@@ -1,6 +1,7 @@
 // this is the background code...
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab)
 {
+    if(tab)
     if (tab.url.includes("youtube.com"))
     {
         // for the current tab, inject the "inject.js" file & execue it
