@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "manifest_version": 2,
   "description": "Pula anúncios do YouTube e fecha banners que aparecem sobre o vídeo.",
+  "icons": { "16": "16.png",
+    "48": "48.png",
+    "128": "128.png" },
   "homepage_url": "http://danharper.me",
   "background": {
     "scripts": [
