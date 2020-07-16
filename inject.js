@@ -36,41 +36,44 @@
 		return 0;
 	}
 
-	//se aba não tem código rodando
-	if(parseInt(getCookie(nomeCookie+tabId)) === 0)
+	if(tabId)
 	{
-		//grava um cookie pra indicar que essa aba está com código rodando
-		createCookie(nomeCookie+tabId, tabId, 365);
-		setInterval(function ()
+		//se aba não tem código rodando
+		if(parseInt(getCookie(nomeCookie+tabId)) === 0)
 		{
-			console.log("rodando "+tabId);
-			//controla se vc tá vendo um vídeo ou não
-			if (window.location.href.includes("watch"))
+			//grava um cookie pra indicar que essa aba está com código rodando
+			createCookie(nomeCookie+tabId, tabId, 365);
+			var link = window.location.href;
+			var intervalo = setInterval(function ()
 			{
+				console.log("rodando "+tabId);
 				try
 				{
-					try
-					{
-						//fecha aquele bannerzinho horizontal que aparece em cima do vídeo
-						document.getElementsByClassName("ytp-ad-overlay-close-button")[0].click();
-						console.log("Propaganda fechada");
-					}
-					catch(err) {}
+					//fecha aquele bannerzinho horizontal que aparece em cima do vídeo
+					document.getElementsByClassName("ytp-ad-overlay-close-button")[0].click();
+					console.log("Propaganda fechada");
+				}
+				catch(err) {}
+				try
+				{
 					//clica no botão de pular o anúncio
 					//funciona mesmo quando o botão ainda não apareceu
 					document.getElementsByClassName("ytp-ad-skip-button")[0].click();
 					console.log("Anúncio pulado");
 				}
 				catch(err) {}
-			}
-		}, 200);
+			}, 200);
+		}
+
+		window.addEventListener('beforeunload', (event) =>
+		{
+			//limpa o cookie da aba atual
+			console.log("limpando cookie "+tabId);
+			createCookie(nomeCookie+tabId, 0, 0);
+		});
 	}
-
-	window.addEventListener('beforeunload', (event) =>
+	else
 	{
-		//limpa o cookie da aba atual
-		console.log("limpando cookie "+tabId);
-		createCookie(nomeCookie+tabId, 0, 0);
-	});
+		window.location.reload();
+	}
 })();
-
